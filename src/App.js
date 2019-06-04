@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Header, List } from 'semantic-ui-react';
 
 import './App.css';
 
@@ -21,21 +22,20 @@ class App extends React.Component {
   }
 
   displaySteps = steps =>
-    steps.map((step, i) => (
-      <div key={i}>
-        {step.body}
-      </div>
-  ))
+        steps.map((step, i) => (<List.Item  key={i}>{step.body}</List.Item>))
 
 
   render() {
     const {recipeSteps} = this.state;
     return (
       <>
-      <h1> It's about to get all sorts</h1>
-      <h2>of real up in here</h2>
-      {this.state.recipe.name}<br/>
-      {this.displaySteps(recipeSteps)}
+      <Header as="h2">cookie builder</Header>
+      <Header as="h3">{this.state.recipe.name}</Header>
+      {(recipeSteps[0]) &&
+        <List ordered>
+          {this.displaySteps(recipeSteps)}
+          </List>
+      }
 
       </>
     )
