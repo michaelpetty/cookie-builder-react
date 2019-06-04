@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    recipe: {},
+    recipeSteps: []
+  }
+  componentDidMount() {
+    axios({
+      method: 'get',
+      url: 'http://localhost:4000/api/v1/recipes/1/full'
+    })
+      .then(response => {
+        console.log(response);
+        this.setState({recipe: response.data.recipe, recipeSteps: response.data.recipeSteps});
+      })
+      .catch(err => console.log(err));
+  }
+
+  displaySteps = steps =>
+    steps.map((step, i) => (
+      <div key={i}>
+        {step.body}
+      </div>
+  ))
+
+
+  render() {
+    const {recipeSteps} = this.state;
+    return (
+      <>
+      <h1> It's about to get all sorts</h1>
+      <h2>of real up in here</h2>
+      {this.state.recipe.name}<br/>
+      {this.displaySteps(recipeSteps)}
+
+      </>
+    )
+  }
 }
+
+// function App() {
+//   return (
+//     <div className="App">
+//       BOO YAH
+//     </div>
+//   );
+// }
 
 export default App;
