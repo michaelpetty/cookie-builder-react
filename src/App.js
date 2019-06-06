@@ -1,53 +1,100 @@
 import React from 'react';
 import axios from 'axios';
-import { Header, List } from 'semantic-ui-react';
+import Routes from './config/routes';
+import Login from './components/User/pages/Login';
 
 import './App.css';
 
 class App extends React.Component {
   state = {
-    recipe: {},
-    recipeSteps: []
+    email: '',
+    password: '',
+    isLoggedIn: '',
+    user: null,
   }
   componentDidMount() {
-    axios({
-      method: 'get',
-      url: 'http://localhost:4000/api/v1/recipes/1/full'
+    if (localStorage.token) {
+      axios({
+        method: 'get',
+        url: `http://localhost:4000/auth/user`,
+        headers: { authorization: `Bearer ${localStorage.token}` }
+      })
+        .then(response => {
+          console.log(response);
+          this.setState({
+            isLoggedIn: true,
+            user: response.data
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.setState({
+        isLoggedIn: false
+      });
+    }
+  }
+
+  handleLogOut = (e) => {
+    e.preventDefault();
+    this.setState({
+      email: '',
+      password: '',
+      isLoggedIn: false
+    });
+    localStorage.clear();
+  }
+
+  handleInput = e => {
+    this.setState({
+      [e.target.name]: e.target.value
     })
+  }
+
+  handleSignUp = e => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:4000/auth/user/signup', {
+        email: this.state.email,
+        password: this.state.password
+      })
       .then(response => {
         console.log(response);
-        this.setState({recipe: response.data.recipe, recipeSteps: response.data.recipeSteps});
+        localStorage.token = response.data.signedJwt;
+        this.setState({
+          isLoggedIn: true
+        })
       })
       .catch(err => console.log(err));
   }
 
-  displaySteps = steps =>
-        steps.map((step, i) => (<List.Item  key={i}>{step.body}</List.Item>))
-
+  handleLogIn = e => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:4000/auth/user/login', {
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(response => {
+        localStorage.token = response.data.signedJwt;
+        this.setState({
+          isLoggedIn: true
+        })
+      })
+      .catch(err => console.log(err));
+  }
 
   render() {
-    const {recipeSteps} = this.state;
+    const { isLoggedIn } = this.state;
     return (
       <>
-      <Header as="h2">cookie builder</Header>
-      <Header as="h3">{this.state.recipe.name}</Header>
-      {(recipeSteps[0]) &&
-        <List ordered>
-          {this.displaySteps(recipeSteps)}
-          </List>
-      }
-
+      <Login isLoggedIn={isLoggedIn} handleInput={this.handleInput} handleLogIn={this.handleLogIn} />
+      <form>
+        <input value='Log Out' type='submit' onClick={this.handleLogOut} />
+      </form>
+      <Routes isLoggedIn={isLoggedIn} />
       </>
     )
   }
 }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       BOO YAH
-//     </div>
-//   );
-// }
 
 export default App;
