@@ -10,20 +10,22 @@ class App extends React.Component {
     email: '',
     password: '',
     isLoggedIn: '',
-    user: null,
+    user: {},
+    faves: []
   }
   componentDidMount() {
     if (localStorage.token) {
       axios({
         method: 'get',
-        url: `http://localhost:4000/auth/user`,
+        url: `http://localhost:4000/auth/user/full`,
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
         .then(response => {
           console.log(response);
           this.setState({
             isLoggedIn: true,
-            user: response.data
+            user: response.data.user,
+            faves: response.data.faves
           });
         })
         .catch(err => console.log(err));
@@ -77,21 +79,23 @@ class App extends React.Component {
       .then(response => {
         localStorage.token = response.data.signedJwt;
         this.setState({
-          isLoggedIn: true
+          isLoggedIn: true,
+          user: response.data.user,
+          faves: response.data.faves
         })
       })
       .catch(err => console.log(err));
   }
 
   render() {
-    const { isLoggedIn } = this.state;
+    const { isLoggedIn, user, faves } = this.state;
     return (
       <>
       <Login isLoggedIn={isLoggedIn} handleInput={this.handleInput} handleLogIn={this.handleLogIn} />
       <form>
         <input value='Log Out' type='submit' onClick={this.handleLogOut} />
       </form>
-      <Routes isLoggedIn={isLoggedIn} />
+      <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} />
       </>
     )
   }
