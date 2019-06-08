@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Header, List } from 'semantic-ui-react';
 
 class PreBuilt extends React.Component {
@@ -20,7 +21,7 @@ class PreBuilt extends React.Component {
   }
 
   displayRecipes = recipes => {
-    return recipes.map((recipe, i) => (<List.Item  key={i}>{recipe.name}</List.Item>))
+    return recipes.map((recipe, i) => (<List.Item  key={i} as={Link} to={`/recipe/${recipe.id}`}>{recipe.name}</List.Item>))
   }
 
   render() {

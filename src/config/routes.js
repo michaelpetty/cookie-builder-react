@@ -14,7 +14,7 @@ const Routes = ({ isLoggedIn, user, faves }) => (
     <Route exact path='/' component={BuildCookie} />
     <Route path='/pre-built-cookies' component={PreBuilt} />
     <Route path='/recipe/:recipeId' component={Recipe} />
-    <Route path='/user' render={(props) => <UserProfile {...props} isLoggedIn={isLoggedIn} user={user} faves={faves} />} />
+    <Route path='/profile' render={(props) => <UserProfile {...props} isLoggedIn={isLoggedIn} user={user} faves={faves} />} />
   </Switch>
 );
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Header, List, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Header, List, Table, Accordion, Popup, Menu } from 'semantic-ui-react';
 
 class UserProfile extends React.Component {
   state = {
@@ -8,15 +9,17 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    // axios({
-    //   method: 'get',
-    //   url: 'http://localhost:4000/api/v1/ingredients/top'
-    // })
-    //   .then(response => {
-    //     console.log(response);
-    //     this.setState({ topIngred: response.data });
-    //   })
-    //   .catch(err => console.log(err));
+    if (localStorage.token) {
+      axios({
+        method: 'get',
+        url: `http://localhost:4000/auth/user/orders`,
+        headers: { authorization: `Bearer ${localStorage.token}` }
+      })
+      .then(response => {
+        this.setState({ orders: response.data });
+      })
+      .catch(err => console.log(err));
+    }
   }
 
 
@@ -25,7 +28,47 @@ class UserProfile extends React.Component {
   // }
 
   displayFaves = faves => {
-    return faves.map((fave, i) => (<List.Item  key={i}>{fave.Recipe.name}</List.Item>))
+    return faves.map((fave, i) => (<List.Item  key={i}><Popup trigger={<Link to={`/recipe/${fave.Recipe.id}`}>{fave.Recipe.name}</Link>} hoverable position="right center">
+    <Menu vertical>
+      <Menu.Item><Link to={`/recipe/1`}>Recipe</Link></Menu.Item>
+      <Menu.Item><Link to={`/recipe/1`}>Order</Link><br/>
+      @ ${fave.Recipe.price}/dozen</Menu.Item>
+      <Menu.Item><Link to={`/recipe/1`}>Fave</Link></Menu.Item>
+      </Menu>
+      </Popup></List.Item>))
+  }
+
+  buildOrderTables = orders => {
+    return orders.map((order, i) => {
+      return {
+        key: i,
+        title: `Details from order on ${order.createdAt}`,
+        content: {
+          content: (
+            <Table singleLine key={i}>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Quantity</Table.HeaderCell>
+                  <Table.HeaderCell>Cookies</Table.HeaderCell>
+                  <Table.HeaderCell>Paid</Table.HeaderCell>
+                  <Table.HeaderCell>Ordered On</Table.HeaderCell>
+                  <Table.HeaderCell>Delivery</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>{order.quantity} dozen</Table.Cell>
+                  <Table.Cell><Link to={`/recipe/${order.Recipe.id}`}>{order.Recipe.name}</Link></Table.Cell>
+                  <Table.Cell>${order.paid}</Table.Cell>
+                  <Table.Cell>{order.createdAt}</Table.Cell>
+                  <Table.Cell>{order.expectedDelivery}</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+          )
+        }
+      }
+    })
   }
 
   render() {
@@ -54,8 +97,14 @@ class UserProfile extends React.Component {
           </List>
           </>
         }
-
-        {/*this.displayTopIngs(topIngred)*/}
+        {(orders[0]) &&
+          <>
+          <Header as="h3">Orders</Header>
+          <Accordion defaultActiveIndex={[]}
+            panels={this.buildOrderTables(orders)}
+             exclusive={false}/>
+          </>
+        }
       </>
     )
   }

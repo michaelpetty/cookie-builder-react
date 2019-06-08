@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { Dropdown } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 import Routes from './config/routes';
 import Login from './components/User/pages/Login';
 
@@ -21,7 +23,6 @@ class App extends React.Component {
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
         .then(response => {
-          console.log(response);
           this.setState({
             isLoggedIn: true,
             user: response.data.user,
@@ -95,6 +96,13 @@ class App extends React.Component {
       <form>
         <input value='Log Out' type='submit' onClick={this.handleLogOut} />
       </form>
+      <Dropdown text="Navigation">
+        <Dropdown.Menu>
+          <Dropdown.Item as={NavLink} to='/'>Cookie Builder</Dropdown.Item>
+          <Dropdown.Item as={NavLink} to='/pre-built-cookies'>Pre-Built Cookies</Dropdown.Item>
+          {(isLoggedIn) && <Dropdown.Item as={NavLink} to='/profile'>Profile</Dropdown.Item> }
+        </Dropdown.Menu>
+      </Dropdown>
       <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} />
       </>
     )
