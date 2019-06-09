@@ -27,13 +27,21 @@ class App extends React.Component {
             isLoggedIn: true,
             user: response.data.user,
             faves: response.data.faves
-          });
+          })
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err.response.data);
+          localStorage.removeItem('token');
+          this.setState({
+            isLoggedIn: false,
+            user: {},
+            faves: []
+          })
+        })
     } else {
       this.setState({
         isLoggedIn: false
-      });
+      })
     }
   }
 
