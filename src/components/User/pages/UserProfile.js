@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Header, List, Table, Accordion, Popup, Menu } from 'semantic-ui-react';
+import { Header, List, Table, Accordion, Popup, Menu, Message } from 'semantic-ui-react';
 
 class UserProfile extends React.Component {
   state = {
@@ -38,11 +38,23 @@ class UserProfile extends React.Component {
       </Popup></List.Item>))
   }
 
+  formatDate = inp => {
+    return ((typeof inp === 'string')? new Date(inp): inp).toLocaleDateString();
+  }
+
+  displayDelivery = order => {
+    if (order.deliveredOn) {
+      return `Delivered: ${this.formatDate(order.deliveredOn)}`;
+    } else {
+      return (<Message color="green">Expected: {this.formatDate(order.expectedDelivery)}</Message>);
+    }
+  }
+
   buildOrderTables = orders => {
     return orders.map((order, i) => {
       return {
         key: i,
-        title: `Details from order on ${order.createdAt}`,
+        title: `Details from order on ${this.formatDate(order.createdAt)}`,
         content: {
           content: (
             <Table singleLine key={i}>
@@ -60,8 +72,8 @@ class UserProfile extends React.Component {
                   <Table.Cell>{order.quantity} dozen</Table.Cell>
                   <Table.Cell><Link to={`/recipe/${order.Recipe.id}`}>{order.Recipe.name}</Link></Table.Cell>
                   <Table.Cell>${order.paid}</Table.Cell>
-                  <Table.Cell>{order.createdAt}</Table.Cell>
-                  <Table.Cell>{order.expectedDelivery}</Table.Cell>
+                  <Table.Cell>{this.formatDate(order.createdAt)}</Table.Cell>
+                  <Table.Cell>{this.displayDelivery(order)}</Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -100,9 +112,9 @@ class UserProfile extends React.Component {
         {(orders[0]) &&
           <>
           <Header as="h3">Orders</Header>
-          <Accordion defaultActiveIndex={[]}
+          <Accordion defaultActiveIndex={0}
             panels={this.buildOrderTables(orders)}
-             exclusive={false}/>
+          />
           </>
         }
       </>

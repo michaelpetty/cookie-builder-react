@@ -1,20 +1,25 @@
 import React from 'react';
+import { Modal, Form, Segment } from 'semantic-ui-react';
 
-
-const LogIn = ({ handleInput, handleLogIn }) => (
+const LogIn = ({ handleInput, handleLogIn, modalOpen, closeLogin }) => (
 	<div>
+	<Modal
+		open={modalOpen}
+		onClose={closeLogin}
+		basic
+		size='small'
+	>
+		<Modal.Content>
 		<h2>Log In</h2>
-		<form>
-			<div>
-				<label htmlFor="email">Email</label>
-				<input type="text" name="email" onChange={handleInput} />
-			</div>
-			<div>
-				<label htmlFor="password">Password</label>
-				<input type="password" name="password" onChange={handleInput} />
-			</div>
-			<input value="Submit" type="submit" onClick={handleLogIn} />
-		</form>
+		<Form size='large'>
+        <Segment stacked>
+          <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' name='email' onChange={handleInput} />
+          <Form.Input fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password' onChange={handleInput} />
+					<Form.Button position="right" content='Login' onClick={handleLogIn} />
+				</Segment>
+			</Form>
+		</Modal.Content>
+	</Modal>
 	</div>
 );
 

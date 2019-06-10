@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Dropdown } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom';
+import { Menu, Container, Image, Dropdown } from 'semantic-ui-react';
+import { Link, NavLink } from 'react-router-dom';
 import Routes from './config/routes';
 import Login from './components/User/pages/Login';
 
@@ -12,6 +12,7 @@ class App extends React.Component {
     email: '',
     password: '',
     isLoggedIn: '',
+    modalOpen: false,
     user: {},
     faves: []
   }
@@ -78,6 +79,14 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
+  openLogin = () => {
+    this.setState({modalOpen: true});
+  }
+
+  closeLogin = () => {
+    return this.setState({modalOpen: false});
+  }
+
   handleLogIn = e => {
     e.preventDefault();
     axios
@@ -90,28 +99,50 @@ class App extends React.Component {
         this.setState({
           isLoggedIn: true,
           user: response.data.user,
-          faves: response.data.faves
+          faves: response.data.faves,
+          email: '',
+          password: ''
         })
+        this.closeLogin();
       })
       .catch(err => console.log(err));
   }
 
+
   render() {
-    const { isLoggedIn, user, faves } = this.state;
+    const { isLoggedIn, modalOpen, user, faves } = this.state;
     return (
       <>
-      <Login isLoggedIn={isLoggedIn} handleInput={this.handleInput} handleLogIn={this.handleLogIn} />
-      <form>
-        <input value='Log Out' type='submit' onClick={this.handleLogOut} />
-      </form>
-      <Dropdown text="Navigation">
-        <Dropdown.Menu>
-          <Dropdown.Item as={NavLink} to='/'>Cookie Builder</Dropdown.Item>
-          <Dropdown.Item as={NavLink} to='/pre-built-cookies'>Pre-Built Cookies</Dropdown.Item>
-          {(isLoggedIn) && <Dropdown.Item as={NavLink} to='/profile'>Profile</Dropdown.Item> }
-        </Dropdown.Menu>
-      </Dropdown>
-      <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} />
+      <Menu fixed='top'>
+        <Container>
+          <Menu.Item as={Link} to='/' header>
+            <Image size='mini' src='/i/chocChip60.png' style={{ marginRight: '1.5em' }} />
+            MP's Cookie Factory
+          </Menu.Item>
+          <Menu.Item position='right'>
+          <Dropdown simple direction='left' text='Navigation'>
+            <Dropdown.Menu>
+              <Dropdown.Item as={NavLink} to='/'>Cookie Builder</Dropdown.Item>
+              <Dropdown.Item as={NavLink} to='/pre-built-cookies'>Pre-Built Cookies</Dropdown.Item>
+              <Dropdown.Divider />
+              {(isLoggedIn)? (
+                <>
+                  <Dropdown.Item as={NavLink} to='/profile'>Profile</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={this.handleLogOut}>Sign Out</Dropdown.Item>
+                </>
+              ) : (
+                <Dropdown.Item onClick={this.openLogin}>Login</Dropdown.Item>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+          </Menu.Item>
+        </Container>
+      </Menu>
+      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} modalOpen={modalOpen} closeLogin={this.closeLogin} />
+      <Container text style={{ marginTop: '7em' }}>
+        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} />
+      </Container>
       </>
     )
   }
