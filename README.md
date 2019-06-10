@@ -1,68 +1,63 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ![](http://cookie-builder.codetojoy.tech/i/chocChip60.png) cookie-builder-react
+General Assembly capstone project of a full-stack on React and Node Express 
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+#### Technologies Used
+#### Front End
+- React
+- semantic-ui-react
+- react-router-dom
+- axios
+- HTML, CSS, JavaScript
 
-### `npm start`
+#### Backend
+- Express
+- TypeScript
+- Sequelize
+- PostgreSQL
+- bcrypt
+- jsonwebtoken
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+#### To Install
+1. clone cookie-builder-api
+2. npm i
+3. npm run seed-data
+- running on http://localhost:4000/
+4. clone cookie-builder-react
+5. npm i
+6. nodemon
+- running on http://localhost:3000/
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Project Tracker
+https://trello.com/b/yrYhQk66/cookie-builder
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Snippets
+![](readme-assets/Homepage.png)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+![](readme-assets/fadeToggle.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](readme-assets/nextArrow.png)
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Unsolved Problems
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- could not get values of css variables at load of document to manipulate in js
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Big Wins & Big Challenges
 
-## Learn More
+- **W** building the carousel by hand
+- **C** building the carousel by hand
+- **C** wireframe
+- **C** time management
+- **W** using element attribute data- dataset to send slide and slide dot info 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
