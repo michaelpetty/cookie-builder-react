@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Form } from 'semantic-ui-react';
+import { Form, List, Header } from 'semantic-ui-react';
 
 class OrderForm extends React.Component {
   date = new Date();
@@ -10,10 +10,11 @@ class OrderForm extends React.Component {
     recipe: null,
     cost: 0,
     expectedDelivery: new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() + 7),
-    orders: null
+    orders: null,
   }
 
   componentDidMount() {
+    this.props.setHeader('Order Form');
     axios({
       method: 'get',
       url: `http://localhost:4000/api/v1/recipes/${this.props.match.params.recipeId}`
@@ -59,16 +60,30 @@ class OrderForm extends React.Component {
 
   render() {
     const { quantity, recipe, cost, expectedDelivery, orders } = this.state;
+    const { user } = this.props;
     return (
       <div>
-        <h2>Order Form</h2>
         {!(orders) ? (
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group inline>
-            <Form.Input width={1} fluid id='quantity' name='quantity' type='number' min='1' max='10' value={quantity} onChange={this.handleInput} /> dozen {(recipe) && <>{recipe.name}</>} cookies for ${cost}
-          </Form.Group>
-          <Form.Button content='Place your order' />
-        </Form>
+          <>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group inline>
+                <Form.Input width={2} fluid id='quantity' name='quantity' type='number' min='1' max='10' value={quantity} onChange={this.handleInput} /> dozen {(recipe) && <>{recipe.name}</>} cookies for ${cost}
+              </Form.Group>
+              <Form.Button content='Place your order' />
+            </Form>
+            {(user) &&
+              <>
+                <Header as="h3">Shipping to:</Header>
+                <List>
+                  <List.Item>{user.name}</List.Item>
+                  <List.Item>{user.street1}</List.Item>
+                  {(user.street2 )&& <List.Item>{user.street2}</List.Item> }
+                  <List.Item>{user.city}, {user.state}</List.Item>
+                  <List.Item>{user.postalCode}</List.Item>
+                  </List>
+              </>
+            }
+        </>
       ) : (
 
         <div>

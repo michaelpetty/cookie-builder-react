@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Header, List, Table, Accordion, Popup, Menu } from 'semantic-ui-react';
+import { Header, List, Table, Accordion, Message } from 'semantic-ui-react';
+import RecipePopUp from '../../Recipes/lists/RecipePopUp';
 
 class UserProfile extends React.Component {
   state = {
@@ -9,6 +10,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setHeader('Your Info');
     if (localStorage.token) {
       axios({
         method: 'get',
@@ -22,27 +24,29 @@ class UserProfile extends React.Component {
     }
   }
 
-
-  // displayDeets = user => {
-  //   return recipes.map((recipe, i) => (<List.Item  key={i}>{recipe.Recipe.name}</List.Item>))
-  // }
-
   displayFaves = faves => {
-    return faves.map((fave, i) => (<List.Item  key={i}><Popup trigger={<Link to={`/recipe/${fave.Recipe.id}`}>{fave.Recipe.name}</Link>} hoverable position="right center">
-    <Menu vertical>
-      <Menu.Item><Link to={`/recipe/1`}>Recipe</Link></Menu.Item>
-      <Menu.Item><Link to={`/recipe/1`}>Order</Link><br/>
-      @ ${fave.Recipe.price}/dozen</Menu.Item>
-      <Menu.Item><Link to={`/recipe/1`}>Fave</Link></Menu.Item>
-      </Menu>
-      </Popup></List.Item>))
+    return faves.map((fave, i) => (
+      <RecipePopUp recipe={fave.Recipe} faves={faves} key={i}/>
+    ))
+  }
+
+  formatDate = inp => {
+    return ((typeof inp === 'string')? new Date(inp): inp).toLocaleDateString();
+  }
+
+  displayDelivery = order => {
+    if (order.deliveredOn) {
+      return `Delivered: ${this.formatDate(order.deliveredOn)}`;
+    } else {
+      return (<Message color="green">Expected: {this.formatDate(order.expectedDelivery)}</Message>);
+    }
   }
 
   buildOrderTables = orders => {
     return orders.map((order, i) => {
       return {
         key: i,
-        title: `Details from order on ${order.createdAt}`,
+        title: `Details from order on ${this.formatDate(order.createdAt)}`,
         content: {
           content: (
             <Table singleLine key={i}>
@@ -60,8 +64,8 @@ class UserProfile extends React.Component {
                   <Table.Cell>{order.quantity} dozen</Table.Cell>
                   <Table.Cell><Link to={`/recipe/${order.Recipe.id}`}>{order.Recipe.name}</Link></Table.Cell>
                   <Table.Cell>${order.paid}</Table.Cell>
-                  <Table.Cell>{order.createdAt}</Table.Cell>
-                  <Table.Cell>{order.expectedDelivery}</Table.Cell>
+                  <Table.Cell>{this.formatDate(order.createdAt)}</Table.Cell>
+                  <Table.Cell>{this.displayDelivery(order)}</Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -76,7 +80,6 @@ class UserProfile extends React.Component {
     const { orders } = this.state;
     return (
       <>
-        <Header as="h2">Your Info</Header>
         {(user) &&
           <>
           <Header as="h3">Shipping Address</Header>
@@ -100,9 +103,9 @@ class UserProfile extends React.Component {
         {(orders[0]) &&
           <>
           <Header as="h3">Orders</Header>
-          <Accordion defaultActiveIndex={[]}
+          <Accordion defaultActiveIndex={0}
             panels={this.buildOrderTables(orders)}
-             exclusive={false}/>
+          />
           </>
         }
       </>

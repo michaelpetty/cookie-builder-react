@@ -11,12 +11,12 @@ class Recipe extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setHeader('Recipe');
     axios({
       method: 'get',
       url: `http://localhost:4000/api/v1/recipes/${this.state.recipeId}/full`
     })
       .then(response => {
-        console.log(response);
         this.setState({recipe: response.data.recipe, recipeSteps: response.data.recipeSteps, recIngs: response.data.ingredients});
       })
       .catch(err => console.log(err));
@@ -34,21 +34,27 @@ class Recipe extends React.Component {
     const { recipe, recipeSteps, recIngs } = this.state;
     return (
       <>
-        <Header as="h2">{recipe.name} Recipe</Header>
+        <Header as="h2">{recipe.name}</Header>
         {(recIngs[0]) &&
           <>
+          {(recipe.intro) && <i>Intro: {recipe.intro}</i> }
           <Header as="h3">Ingredients</Header>
-          <List ordered>
+          <List>
             {this.displayIngs(recIngs)}
           </List>
+          {(recipe.activeTime) && <>Active Time: {recipe.activeTime}</>} {(recipe.totalTime) && <>Total Time: {recipe.totalTime}</>}<br/>
+          Yield: {recipe.yield}
           </>
         }
         {(recipeSteps[0]) &&
           <>
           <Header as="h3">Steps</Header>
+          Preheat: {recipe.preheat}&deg;
           <List ordered>
             {this.displaySteps(recipeSteps)}
           </List>
+          {recipe.note}<br/>
+          Source: <a href={recipe.sourceURL}>{recipe.source}</a>
           </>
         }
         </>
