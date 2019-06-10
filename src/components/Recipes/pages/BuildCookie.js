@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { Header, List, Button } from 'semantic-ui-react';
+import RecipePopUp from '../lists/RecipePopUp';
 
 class BuildCookie extends React.Component {
   state = {
@@ -11,6 +11,7 @@ class BuildCookie extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setHeader('Build-A-Cookie');
     axios({
       method: 'get',
       url: 'http://localhost:4000/api/v1/ingredients/top'
@@ -34,7 +35,9 @@ class BuildCookie extends React.Component {
   }
 
   displayRecipes = recipes => {
-    return recipes.map((recipe, i) => (<List.Item  key={i} as={Link} to={`/recipe/${recipe.Recipe.id}`}>{recipe.Recipe.name}</List.Item>))
+    return recipes.map((recipe, i) => (
+      <RecipePopUp recipe={recipe.Recipe} faves={this.props.faves} key={i}/>
+    ))
   }
 
   displayTopIngs = ings => {
@@ -45,7 +48,7 @@ class BuildCookie extends React.Component {
     const { topIngred, recipeResults } = this.state;
     return (
       <>
-        <Header as="h2">cookie builder</Header>
+        {this.displayTopIngs(topIngred)}
         {(recipeResults[0]) &&
           <>
           <Header as="h3">Matching recipes</Header>
@@ -54,8 +57,6 @@ class BuildCookie extends React.Component {
           </List>
           </>
         }
-
-        {this.displayTopIngs(topIngred)}
       </>
     )
   }

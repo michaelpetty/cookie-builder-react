@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Menu, Container, Image, Dropdown } from 'semantic-ui-react';
+import { Header, Menu, Container, Image, Dropdown } from 'semantic-ui-react';
 import { Link, NavLink } from 'react-router-dom';
 import Routes from './config/routes';
 import Login from './components/User/pages/Login';
@@ -12,9 +12,10 @@ class App extends React.Component {
     email: '',
     password: '',
     isLoggedIn: '',
-    modalOpen: false,
-    user: {},
-    faves: []
+    isModalOpen: false,
+    header: 'Build-A-Cookie',
+    user: null,
+    faves: null
   }
   componentDidMount() {
     if (localStorage.token) {
@@ -80,11 +81,11 @@ class App extends React.Component {
   }
 
   openLogin = () => {
-    this.setState({modalOpen: true});
+    this.setState({isModalOpen: true});
   }
 
   closeLogin = () => {
-    return this.setState({modalOpen: false});
+    return this.setState({isModalOpen: false});
   }
 
   handleLogIn = e => {
@@ -108,19 +109,24 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
+  setHeader = (title) => this.setState({header: title});
+
 
   render() {
-    const { isLoggedIn, modalOpen, user, faves } = this.state;
+    const { isLoggedIn, isModalOpen, header, user, faves } = this.state;
     return (
       <>
-      <Menu fixed='top'>
+      <Menu fixed='top' as='header'>
         <Container>
           <Menu.Item as={Link} to='/' header>
             <Image size='mini' src='/i/chocChip60.png' style={{ marginRight: '1.5em' }} />
             MP's Cookie Factory
           </Menu.Item>
           <Menu.Item position='right'>
-          <Dropdown simple direction='left' text='Navigation'>
+            <Header as='h2'>{header}</Header>
+          </Menu.Item>
+          <Menu.Item>
+          <Dropdown simple direction='left' text='Navigation' as='nav'>
             <Dropdown.Menu>
               <Dropdown.Item as={NavLink} to='/'>Cookie Builder</Dropdown.Item>
               <Dropdown.Item as={NavLink} to='/pre-built-cookies'>Pre-Built Cookies</Dropdown.Item>
@@ -139,9 +145,9 @@ class App extends React.Component {
           </Menu.Item>
         </Container>
       </Menu>
-      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} modalOpen={modalOpen} closeLogin={this.closeLogin} />
+      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
-        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} />
+        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} setHeader={this.setHeader} />
       </Container>
       </>
     )

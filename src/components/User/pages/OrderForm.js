@@ -14,6 +14,7 @@ class OrderForm extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setHeader('Order Form');
     axios({
       method: 'get',
       url: `http://localhost:4000/api/v1/recipes/${this.props.match.params.recipeId}`
@@ -61,11 +62,10 @@ class OrderForm extends React.Component {
     const { quantity, recipe, cost, expectedDelivery, orders } = this.state;
     return (
       <div>
-        <h2>Order Form</h2>
         {!(orders) ? (
         <Form onSubmit={this.handleSubmit}>
           <Form.Group inline>
-            <Form.Input width={1} fluid id='quantity' name='quantity' type='number' min='1' max='10' value={quantity} onChange={this.handleInput} /> dozen {(recipe) && <>{recipe.name}</>} cookies for ${cost}
+            <Form.Input width={2} fluid id='quantity' name='quantity' type='number' min='1' max='10' value={quantity} onChange={this.handleInput} /> dozen {(recipe) && <>{recipe.name}</>} cookies for ${cost}
           </Form.Group>
           <Form.Button content='Place your order' />
         </Form>

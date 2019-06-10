@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Header, List, Table, Accordion, Popup, Menu, Message } from 'semantic-ui-react';
+import { Header, List, Table, Accordion, Message } from 'semantic-ui-react';
+import RecipePopUp from '../../Recipes/lists/RecipePopUp';
 
 class UserProfile extends React.Component {
   state = {
@@ -9,6 +10,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setHeader('Your Info');
     if (localStorage.token) {
       axios({
         method: 'get',
@@ -22,20 +24,10 @@ class UserProfile extends React.Component {
     }
   }
 
-
-  // displayDeets = user => {
-  //   return recipes.map((recipe, i) => (<List.Item  key={i}>{recipe.Recipe.name}</List.Item>))
-  // }
-
   displayFaves = faves => {
-    return faves.map((fave, i) => (<List.Item  key={i}><Popup trigger={<Link to={`/recipe/${fave.Recipe.id}`}>{fave.Recipe.name}</Link>} hoverable position="right center">
-    <Menu vertical>
-      <Menu.Item><Link to={`/recipe/1`}>Recipe</Link></Menu.Item>
-      <Menu.Item><Link to={`/recipe/1`}>Order</Link><br/>
-      @ ${fave.Recipe.price}/dozen</Menu.Item>
-      <Menu.Item><Link to={`/recipe/1`}>Fave</Link></Menu.Item>
-      </Menu>
-      </Popup></List.Item>))
+    return faves.map((fave, i) => (
+      <RecipePopUp recipe={fave.Recipe} faves={faves} key={i}/>
+    ))
   }
 
   formatDate = inp => {
@@ -88,7 +80,6 @@ class UserProfile extends React.Component {
     const { orders } = this.state;
     return (
       <>
-        <Header as="h2">Your Info</Header>
         {(user) &&
           <>
           <Header as="h3">Shipping Address</Header>

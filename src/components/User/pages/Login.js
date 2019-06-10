@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal, Form, Segment } from 'semantic-ui-react';
 
-const LogIn = ({ handleInput, handleLogIn, modalOpen, closeLogin }) => (
+const LogIn = ({ handleInput, handleLogIn, isModalOpen, closeLogin }) => (
 	<div>
 	<Modal
-		open={modalOpen}
+		open={isModalOpen}
 		onClose={closeLogin}
 		basic
 		size='small'
