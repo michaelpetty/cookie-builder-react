@@ -1,13 +1,43 @@
 import React from 'react';
+import axios from 'axios';
 import { List, Popup, Menu, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 const RecipePopUp = ({recipe, faves}) => {
+
+  const addFave = () => {
+    if (localStorage.token) {
+      axios({
+        method: 'post',
+        url: `http://localhost:4000/auth/user/faves/${recipe.id}`,
+        headers: { authorization: `Bearer ${localStorage.token}` }
+      })
+      .then(response => {
+        //something cool happens here
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
+  const removeFave = () => {
+    if (localStorage.token) {
+      axios({
+        method: 'delete',
+        url: `http://localhost:4000/auth/user/faves/${recipe.id}`,
+        headers: { authorization: `Bearer ${localStorage.token}` }
+      })
+      .then(response => {
+        //something cool happens here
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
   const buildFaveLink = () => {
     if (faves.find((fave) => fave.RecipeId === recipe.id)) {
-      return (<>Favorite (remove<Icon name='minus' />)</>);
+      return (<div onClick={removeFave}>Favorite (remove <Icon name='minus' />)</div>);
     } else {
-      return (<>Fave/Save<Icon name='plus' /></>);
+      return (<div onClick={addFave}>Fave/Save (<Icon name='plus' />)</div>);
     }
   }
 
