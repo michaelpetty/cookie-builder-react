@@ -1,5 +1,5 @@
 # ![](http://cookie-builder.codetojoy.tech/i/chocChip60.png) cookie-builder-react
-General Assembly capstone project of a full-stack on React and Node Express 
+General Assembly capstone project of a full-stack on React and Node Express
 
 ---
 
@@ -59,5 +59,4 @@ https://trello.com/b/yrYhQk66/cookie-builder
 - **C** building the carousel by hand
 - **C** wireframe
 - **C** time management
-- **W** using element attribute data- dataset to send slide and slide dot info 
-
+- **W** using element attribute data- dataset to send slide and slide dot info

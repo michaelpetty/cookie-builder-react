@@ -21,7 +21,7 @@ class App extends React.Component {
     if (localStorage.token) {
       axios({
         method: 'get',
-        url: `http://localhost:4000/auth/user/full`,
+        url: `${process.env.REACT_APP_API}/auth/user/full`,
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
         .then(response => {
@@ -66,7 +66,7 @@ class App extends React.Component {
   handleSignUp = e => {
     e.preventDefault();
     axios
-      .post('http://localhost:4000/auth/user/signup', {
+      .post(`${process.env.REACT_APP_API}/auth/user/signup`, {
         email: this.state.email,
         password: this.state.password
       })
@@ -91,7 +91,7 @@ class App extends React.Component {
   handleLogIn = e => {
     e.preventDefault();
     axios
-      .post('http://localhost:4000/auth/user/login', {
+      .post(`${process.env.REACT_APP_API}/auth/user/login`, {
         email: this.state.email,
         password: this.state.password
       })

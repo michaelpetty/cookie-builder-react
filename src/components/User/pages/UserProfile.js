@@ -14,7 +14,7 @@ class UserProfile extends React.Component {
     if (localStorage.token) {
       axios({
         method: 'get',
-        url: `http://localhost:4000/auth/user/orders`,
+        url: `${process.env.REACT_APP_API}/auth/user/orders`,
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
       .then(response => {

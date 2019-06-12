@@ -14,7 +14,7 @@ class Recipe extends React.Component {
     this.props.setHeader('Recipe');
     axios({
       method: 'get',
-      url: `http://localhost:4000/api/v1/recipes/${this.state.recipeId}/full`
+      url: `${process.env.REACT_APP_API}/api/v1/recipes/${this.state.recipeId}/full`
     })
       .then(response => {
         this.setState({recipe: response.data.recipe, recipeSteps: response.data.recipeSteps, recIngs: response.data.ingredients});

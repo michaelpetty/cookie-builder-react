@@ -9,7 +9,7 @@ const RecipePopUp = ({recipe, faves}) => {
     if (localStorage.token) {
       axios({
         method: 'post',
-        url: `http://localhost:4000/auth/user/faves/${recipe.id}`,
+        url: `${process.env.REACT_APP_API}/auth/user/faves/${recipe.id}`,
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
       .then(response => {
@@ -23,7 +23,7 @@ const RecipePopUp = ({recipe, faves}) => {
     if (localStorage.token) {
       axios({
         method: 'delete',
-        url: `http://localhost:4000/auth/user/faves/${recipe.id}`,
+        url: `${process.env.REACT_APP_API}/auth/user/faves/${recipe.id}`,
         headers: { authorization: `Bearer ${localStorage.token}` }
       })
       .then(response => {

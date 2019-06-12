@@ -14,7 +14,7 @@ class BuildCookie extends React.Component {
     this.props.setHeader('Build-A-Cookie');
     axios({
       method: 'get',
-      url: 'http://localhost:4000/api/v1/ingredients/top'
+      url: `${process.env.REACT_APP_API}/api/v1/ingredients/top`
     })
       .then(response => {
         this.setState({ topIngred: response.data });
@@ -25,7 +25,7 @@ class BuildCookie extends React.Component {
   addIngred = (id) => {
     axios({
       method: 'get',
-      url: `http://localhost:4000/api/v1/recipes?ingredient=${id}`
+      url: `${process.env.REACT_APP_API}/api/v1/recipes?ingredient=${id}`
     })
       .then(response => {
         this.setState({ recipeResults: response.data });

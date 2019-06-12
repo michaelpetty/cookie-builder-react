@@ -17,7 +17,7 @@ class OrderForm extends React.Component {
     this.props.setHeader('Order Form');
     axios({
       method: 'get',
-      url: `http://localhost:4000/api/v1/recipes/${this.props.match.params.recipeId}`
+      url: `${process.env.REACT_APP_API}/api/v1/recipes/${this.props.match.params.recipeId}`
     })
       .then(response => {
         this.setState({
@@ -33,7 +33,7 @@ class OrderForm extends React.Component {
     if (localStorage.token) {
       axios({
         method: 'post',
-        url: `http://localhost:4000/auth/user/orders`,
+        url: `${process.env.REACT_APP_API}/auth/user/orders`,
         headers: { authorization: `Bearer ${localStorage.token}` },
         data: {
           expectedDelivery: this.state.expectedDelivery,

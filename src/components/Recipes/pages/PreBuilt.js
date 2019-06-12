@@ -12,7 +12,7 @@ class PreBuilt extends React.Component {
     this.props.setHeader('Pre-Built Cookies');
     axios({
       method: 'get',
-      url: 'http://localhost:4000/api/v1/recipes'
+      url: `${process.env.REACT_APP_API}/api/v1/recipes`
     })
       .then(response => {
         this.setState({recipes: response.data});
