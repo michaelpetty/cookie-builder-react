@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
 
   displayFaves = faves => {
     return faves.map((fave, i) => (
-      <RecipePopUp recipe={fave.Recipe} faves={faves} key={i}/>
+      <List.Item key={i}><RecipePopUp recipe={fave.Recipe} faves={faves} /></List.Item>
     ))
   }
 
