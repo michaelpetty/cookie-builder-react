@@ -36,7 +36,7 @@ class BuildCookie extends React.Component {
 
   displayRecipes = recipes => {
     return recipes.map((recipe, i) => (
-      <RecipePopUp recipe={recipe.Recipe} faves={this.props.faves} key={i}/>
+      <List.Item key={i}><RecipePopUp recipe={recipe.Recipe} faves={this.props.faves} /></List.Item>
     ))
   }
 

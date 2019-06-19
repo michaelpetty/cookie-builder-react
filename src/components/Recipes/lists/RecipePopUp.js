@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { List, Popup, Menu, Icon } from 'semantic-ui-react';
+import { Popup, Menu, Icon, Card } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const RecipePopUp = ({recipe, faves}) => {
+const RecipePopUp = ({recipe, faves, isCard}) => {
 
   const addFave = () => {
     if (localStorage.token) {
@@ -41,10 +41,16 @@ const RecipePopUp = ({recipe, faves}) => {
     }
   }
 
+  const buildTrigger = () => {
+    if (isCard) {
+      return (<Card image={recipe.picture} header={recipe.name} centered raised />)
+    } else {
+      return (<Link to={`/recipe/${recipe.id}`}>{recipe.name}</Link>)
+    }
+  }
+
   return (
-//  <>{console.log(recipe, faves)}</>
-  <List.Item>
-    <Popup trigger={<Link to={`/recipe/${recipe.id}`}>{recipe.name}</Link>} hoverable position="right center">
+    <Popup trigger={buildTrigger()} hoverable position="right center">
       <Menu vertical>
         <Menu.Item>
           <Link to={`/recipe/${recipe.id}`}>Recipe</Link>
@@ -58,7 +64,6 @@ const RecipePopUp = ({recipe, faves}) => {
         </Menu.Item>
       </Menu>
     </Popup>
-  </List.Item>
 )}
 
 export default RecipePopUp;
