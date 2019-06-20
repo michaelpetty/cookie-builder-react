@@ -8,9 +8,9 @@ import UserProfile from '../components/User/pages/UserProfile';
 
 const Routes = ({ isLoggedIn, user, faves, setHeader }) => (
   <Switch>
-    <Route exact path='/' render={(props) => <BuildCookie {...props}  faves={faves} setHeader={setHeader} />} />
+    <Route exact path='/' render={(props) => <BuildCookie {...props}  isLoggedIn={isLoggedIn} faves={faves} setHeader={setHeader} />} />
     <Route path='/pre-built-cookies' render={(props) => <PreBuilt {...props} isLoggedIn={isLoggedIn} user={user} faves={faves} setHeader={setHeader} />} />
-    <Route path='/recipe/:recipeId' render={(props) => <Recipe {...props} setHeader={setHeader} />} />
+    <Route path='/recipe/:recipeId' render={(props) => <Recipe {...props} isLoggedIn={isLoggedIn} faves={faves} setHeader={setHeader} />} />
     <Route path='/order-form/:recipeId' render={(props) => <OrderForm {...props} isLoggedIn={isLoggedIn} user={user} setHeader={setHeader} />} />
     <Route path='/profile' render={(props) => <UserProfile {...props} isLoggedIn={isLoggedIn} user={user} faves={faves} setHeader={setHeader} />} />
   </Switch>

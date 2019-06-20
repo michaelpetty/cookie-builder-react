@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Popup, Menu, Icon, Card } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const RecipePopUp = ({recipe, faves, isCard}) => {
+const RecipePopUp = ({isLoggedIn, recipe, faves, isCard}) => {
 
   const addFave = () => {
     if (localStorage.token) {
@@ -43,7 +43,7 @@ const RecipePopUp = ({recipe, faves, isCard}) => {
 
   const buildTrigger = () => {
     if (isCard) {
-      return (<Card image={recipe.picture} header={recipe.name} centered raised />)
+      return (<Card image={recipe.picture} header={recipe.name} raised />)
     } else {
       return (<Link to={`/recipe/${recipe.id}`}>{recipe.name}</Link>)
     }
@@ -59,9 +59,11 @@ const RecipePopUp = ({recipe, faves, isCard}) => {
           <Link to={`/order-form/${recipe.id}`}>Order</Link><br/>
           @ ${recipe.price}/dozen
         </Menu.Item>
-        <Menu.Item>
-          {buildFaveLink()}
-        </Menu.Item>
+        {(isLoggedIn) &&
+          <Menu.Item>
+            {buildFaveLink()}
+          </Menu.Item>
+        }
       </Menu>
     </Popup>
 )}

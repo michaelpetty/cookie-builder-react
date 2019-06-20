@@ -22,7 +22,7 @@ class PreBuilt extends React.Component {
 
   displayRecipes = recipes => {
     return recipes.map((recipe, i) => (
-      <RecipePopUp recipe={recipe} faves={this.props.faves} isCard key={i}/>
+      <RecipePopUp isLoggedIn={this.props.isLoggedIn} recipe={recipe} faves={this.props.faves} isCard key={i}/>
     ))
   }
 
@@ -30,7 +30,7 @@ class PreBuilt extends React.Component {
     const { recipes } = this.state;
     return (
       <>
-        {(recipes[0] && this.props.faves) &&
+        {(recipes[0]) &&
           <Card.Group stackable doubling itemsPerRow="3">
             {this.displayRecipes(recipes)}
           </Card.Group>
