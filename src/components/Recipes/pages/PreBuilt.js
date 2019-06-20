@@ -22,7 +22,7 @@ class PreBuilt extends React.Component {
 
   displayRecipes = recipes => {
     return recipes.map((recipe, i) => (
-      <RecipePopUp isLoggedIn={this.props.isLoggedIn} recipe={recipe} faves={this.props.faves} isCard key={i}/>
+      <RecipePopUp isLoggedIn={this.props.isLoggedIn} recipe={recipe} faves={this.props.faves} toggleFave={this.props.toggleFave} isCard key={i}/>
     ))
   }
 
