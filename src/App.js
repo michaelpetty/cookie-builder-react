@@ -47,6 +47,45 @@ class App extends React.Component {
     }
   }
 
+  toggleFave = (recipeId, add) => {
+    if (!add) {
+      if (localStorage.token) {
+        axios({
+          method: 'delete',
+          url: `${process.env.REACT_APP_API}/auth/user/faves/${recipeId}`,
+          headers: { authorization: `Bearer ${localStorage.token}` }
+        })
+        .then(response => {
+          //something cool happens here
+          let tmpFaves = this.state.faves;
+          tmpFaves.splice(this.state.faves.findIndex((fave) => fave.RecipeId === recipeId), 1);
+          this.setState({
+            faves: tmpFaves
+          })
+        })
+        .catch(err => console.log(err));
+      }
+    } else {
+      if (localStorage.token) {
+        axios({
+          method: 'post',
+          url: `${process.env.REACT_APP_API}/auth/user/faves/${recipeId}`,
+          headers: { authorization: `Bearer ${localStorage.token}` }
+        })
+        .then(response => {
+          this.setState({
+            faves: response.data
+          })
+        })
+        .catch(err => console.log(err));
+      } else {
+        console.log('popup the login');
+        this.openLogin();
+      }
+    }
+  }
+
+
   handleLogOut = (e) => {
     e.preventDefault();
     this.setState({
@@ -147,7 +186,7 @@ class App extends React.Component {
       </Menu>
       <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
-        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} setHeader={this.setHeader} />
+        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
       </Container>
       </>
     )

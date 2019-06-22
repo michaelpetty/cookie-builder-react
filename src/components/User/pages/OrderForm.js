@@ -61,6 +61,8 @@ class OrderForm extends React.Component {
   render() {
     const { quantity, recipe, cost, expectedDelivery, orders } = this.state;
     const { user } = this.props;
+    const disabled = (!user);
+
     return (
       <div>
         {!(orders) ? (
@@ -69,7 +71,7 @@ class OrderForm extends React.Component {
               <Form.Group inline>
                 <Form.Input width={2} fluid id='quantity' name='quantity' type='number' min='1' max='10' value={quantity} onChange={this.handleInput} /> dozen {(recipe) && <>{recipe.name}</>} cookies for ${cost}
               </Form.Group>
-              <Form.Button content='Place your order' />
+              <Form.Button content='Place your order' disabled={disabled} />
             </Form>
             {(user) &&
               <>
