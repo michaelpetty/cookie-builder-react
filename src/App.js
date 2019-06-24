@@ -79,7 +79,6 @@ class App extends React.Component {
         })
         .catch(err => console.log(err));
       } else {
-        console.log('popup the login');
         this.openLogin();
       }
     }
@@ -91,7 +90,9 @@ class App extends React.Component {
     this.setState({
       email: '',
       password: '',
-      isLoggedIn: false
+      isLoggedIn: false,
+      user: null,
+      faves: null
     });
     localStorage.clear();
   }
@@ -186,7 +187,7 @@ class App extends React.Component {
       </Menu>
       <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
-        <Routes isLoggedIn={isLoggedIn} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
+        <Routes isLoggedIn={isLoggedIn} openLogin={this.openLogin} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
       </Container>
       </>
     )
