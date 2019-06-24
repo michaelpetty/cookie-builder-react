@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Form, List, Header } from 'semantic-ui-react';
+import { Button, Form, List, Header } from 'semantic-ui-react';
 
 class OrderForm extends React.Component {
   date = new Date();
@@ -60,11 +60,14 @@ class OrderForm extends React.Component {
 
   render() {
     const { quantity, recipe, cost, expectedDelivery, orders } = this.state;
-    const { user } = this.props;
+    const { user, openLogin } = this.props;
     const disabled = (!user);
 
     return (
       <div>
+        {(disabled) &&
+          <div>Please <Button content='login' onClick={openLogin} compact /> to order</div>
+        }
         {!(orders) ? (
           <>
             <Form onSubmit={this.handleSubmit}>
