@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Header, Menu, Container, Image, Dropdown } from 'semantic-ui-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import Routes from './config/routes';
 import Login from './components/User/pages/Login';
 
@@ -36,13 +36,15 @@ class App extends React.Component {
           localStorage.removeItem('token');
           this.setState({
             isLoggedIn: false,
-            user: {},
-            faves: []
+            user: null,
+            faves: null
           })
         })
     } else {
       this.setState({
-        isLoggedIn: false
+        isLoggedIn: false,
+        user: null,
+        faves: null
       })
     }
   }
@@ -95,6 +97,9 @@ class App extends React.Component {
       faves: null
     });
     localStorage.clear();
+    if (/^\/profile$/.test(this.props.location.pathname)) {
+      this.props.history.push(`/`);
+    }
   }
 
   handleInput = e => {
@@ -194,4 +199,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);
