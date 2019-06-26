@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Header, List, Table, Accordion, Message } from 'semantic-ui-react';
-import RecipePopUp from '../../Recipes/lists/RecipePopUp';
+import RecipeList from '../../Recipes/lists/RecipeList';
 
 class UserProfile extends React.Component {
   state = {
@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
 
   displayFaves = faves => {
     return faves.map((fave, i) => (
-      <List.Item key={i}><RecipePopUp isLoggedIn={this.props.isLoggedIn} recipe={fave.Recipe} faves={faves} toggleFave={this.props.toggleFave} /></List.Item>
+      <RecipeList isLoggedIn={this.props.isLoggedIn} recipe={fave.Recipe} faves={faves} toggleFave={this.props.toggleFave} key={i} />
     ))
   }
 
@@ -95,7 +95,7 @@ class UserProfile extends React.Component {
         {(faves) &&
           <>
           <Header as="h3">Favorite recipes</Header>
-          <List>
+          <List verticalAlign="middle">
             {this.displayFaves(faves)}
           </List>
           </>

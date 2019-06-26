@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Header, List, Button } from 'semantic-ui-react';
-import RecipePopUp from '../lists/RecipePopUp';
+import RecipeList from '../lists/RecipeList';
 
 class BuildCookie extends React.Component {
   state = {
@@ -36,7 +36,7 @@ class BuildCookie extends React.Component {
 
   displayRecipes = recipes => {
     return recipes.map((recipe, i) => (
-      <List.Item key={i}><RecipePopUp isLoggedIn={this.props.isLoggedIn} recipe={recipe.Recipe} faves={this.props.faves} toggleFave={this.props.toggleFave} /></List.Item>
+          <RecipeList isLoggedIn={this.props.isLoggedIn} recipe={recipe.Recipe} faves={this.props.faves} toggleFave={this.props.toggleFave} key={i}/>
     ))
   }
 
@@ -52,7 +52,7 @@ class BuildCookie extends React.Component {
         {(recipeResults[0]) &&
           <>
           <Header as="h3">Matching recipes</Header>
-          <List>
+          <List selection verticalAlign="middle">
             {this.displayRecipes(recipeResults)}
           </List>
           </>
