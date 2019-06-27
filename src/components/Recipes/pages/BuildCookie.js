@@ -41,11 +41,13 @@ class BuildCookie extends React.Component {
   }
 
   displayTopIngs = ings => {
-    return ings.map((ing, i) => (<Button size='medium' content={ing.name} onClick={() => this.addIngred(ing.id)} key={i}/>))
+    return ings.map((ing, i) => (<Button size='medium' content={ing.name} draggable className='draggable' onClick={() => this.addIngred(ing.id)} key={i}/>))
   }
 
   render() {
     const { topIngred, recipeResults } = this.state;
+    document.title = 'MP\'s Cookie Factory' ;
+
     return (
       <>
         {this.displayTopIngs(topIngred)}

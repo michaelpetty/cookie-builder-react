@@ -32,6 +32,8 @@ class Recipe extends React.Component {
 
   render() {
     const { recipe, recipeSteps, recIngs } = this.state;
+    document.title = `${recipe.name} Recipe - MP's Cookie Factory`;
+
     return (
       <>
         <Header as="h2">{recipe.name}</Header>
