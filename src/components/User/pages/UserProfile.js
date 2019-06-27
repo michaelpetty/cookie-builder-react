@@ -78,6 +78,8 @@ class UserProfile extends React.Component {
   render() {
     const { user, faves } = this.props;
     const { orders } = this.state;
+    document.title = 'Your Profile - MP\'s Cookie Factory' ;
+
     return (
       <>
         {(user) &&

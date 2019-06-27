@@ -28,6 +28,7 @@ class PreBuilt extends React.Component {
 
   render() {
     const { recipes } = this.state;
+    document.title = 'Pre-Built Cookies - MP\'s Cookie Factory' ;
     return (
       <>
         {(recipes[0]) &&

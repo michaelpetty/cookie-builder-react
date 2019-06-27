@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Header, List, Button } from 'semantic-ui-react';
+import { Header, List, Button, Image, Grid } from 'semantic-ui-react';
 import RecipeList from '../lists/RecipeList';
 
 class BuildCookie extends React.Component {
@@ -41,22 +41,38 @@ class BuildCookie extends React.Component {
   }
 
   displayTopIngs = ings => {
-    return ings.map((ing, i) => (<Button size='medium' content={ing.name} onClick={() => this.addIngred(ing.id)} key={i}/>))
+    return ings.map((ing, i) => (
+      <Button size='medium' content={ing.name} draggable className='draggable' onClick={() => this.addIngred(ing.id)} key={i} />
+    ))
   }
 
   render() {
     const { topIngred, recipeResults } = this.state;
+    document.title = 'MP\'s Cookie Factory' ;
+
     return (
       <>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width='9'>
+              <Image src='/i/KitchenAidRed.png' wrapped />
+            </Grid.Column>
+            <Grid.Column width='7'>
+
+          {(recipeResults[0]) ? (
+            <>
+            <Header as="h3">Matching recipes</Header>
+            <List selection verticalAlign="middle">
+              {this.displayRecipes(recipeResults)}
+            </List>
+            </>
+          ) : (
+            <Header as="h3">Choose an ingredient</Header>
+          )}
+          </Grid.Column>
+        </Grid.Row>
+        </Grid>
         {this.displayTopIngs(topIngred)}
-        {(recipeResults[0]) &&
-          <>
-          <Header as="h3">Matching recipes</Header>
-          <List selection verticalAlign="middle">
-            {this.displayRecipes(recipeResults)}
-          </List>
-          </>
-        }
       </>
     )
   }

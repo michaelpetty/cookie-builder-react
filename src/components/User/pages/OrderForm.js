@@ -62,6 +62,7 @@ class OrderForm extends React.Component {
     const { quantity, recipe, cost, expectedDelivery, orders } = this.state;
     const { user, openLogin } = this.props;
     const disabled = (!user);
+    document.title = 'Order Form - MP\'s Cookie Factory' ;
 
     return (
       <div>
