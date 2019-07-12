@@ -16,19 +16,19 @@ const RecipePopUp = ({isLoggedIn, recipe, faves, toggleFave, isCard}) => {
     if (isCard) {
       return (<Card image={recipe.picture} header={recipe.name} raised />)
     } else {
-      return (<Link to={`/recipe/${recipe.id}`}>{recipe.name}</Link>)
+      return (<Link to={`/order-form/${recipe.id}`}>{recipe.name}</Link>)
     }
   }
 
   return (
     <Popup trigger={buildTrigger()} hoverable position="right center">
       <Menu vertical>
+      <Menu.Item>
+        <Link to={`/order-form/${recipe.id}`}>Order</Link><br/>
+        @ ${recipe.price}/dozen
+      </Menu.Item>
         <Menu.Item>
           <Link to={`/recipe/${recipe.id}`}>Recipe</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to={`/order-form/${recipe.id}`}>Order</Link><br/>
-          @ ${recipe.price}/dozen
         </Menu.Item>
         <Menu.Item>
           {buildFaveLink()}
