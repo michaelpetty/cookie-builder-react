@@ -42,8 +42,24 @@ class BuildCookie extends React.Component {
 
   displayTopIngs = ings => {
     return ings.map((ing, i) => (
-      <Button size='medium' content={ing.name} draggable className='draggable' onClick={() => this.addIngred(ing.id)} key={i} />
+      <Button size='medium' content={ing.name} draggable className='draggable' onDragStart={(e) => this.onDragStart(e, ing.id)} key={i} />
     ))
+  }
+
+  onDragOver = e => {
+    e.preventDefault();
+  }
+
+  onDragStart = (e, id) => {
+    e.dataTransfer.setData('text/plain', id);
+  }
+
+  onDrop = e => {
+    this.addIngred(e.dataTransfer.getData('text'));
+  }
+
+  onClear = () => {
+    this.setState({ recipeResults: [] });
   }
 
   render() {
@@ -54,7 +70,7 @@ class BuildCookie extends React.Component {
       <>
         <Grid>
           <Grid.Row>
-            <Grid.Column width='9'>
+            <Grid.Column width='9' className='droppable' onDragOver={(e) => this.onDragOver(e)} onDrop={(e) => this.onDrop(e)}>
               <Image src='/i/KitchenAidRed.png' wrapped />
             </Grid.Column>
             <Grid.Column width='7'>
@@ -65,9 +81,11 @@ class BuildCookie extends React.Component {
             <List selection verticalAlign="middle">
               {this.displayRecipes(recipeResults)}
             </List>
+            <Button size='tiny' compact content={'CLEAR RESULTS'} onClick={this.onClear}/>
             </>
           ) : (
-            <Header as="h3">Choose an ingredient</Header>
+            <Header as="h3">Drag an ingredient to the bowl<br/>
+            to see matching recipes</Header>
           )}
           </Grid.Column>
         </Grid.Row>
