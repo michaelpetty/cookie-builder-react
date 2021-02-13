@@ -11,6 +11,7 @@ class App extends React.Component {
   state = {
     email: '',
     password: '',
+    password2: '',
     isLoggedIn: '',
     isModalOpen: false,
     header: 'Build-A-Cookie',
@@ -108,23 +109,6 @@ class App extends React.Component {
     })
   }
 
-  handleSignUp = e => {
-    e.preventDefault();
-    axios
-      .post(`${process.env.REACT_APP_API}/auth/user/signup`, {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        console.log(response);
-        localStorage.token = response.data.signedJwt;
-        this.setState({
-          isLoggedIn: true
-        })
-      })
-      .catch(err => console.log(err));
-  }
-
   openLogin = () => {
     this.setState({isModalOpen: true});
   }
@@ -137,6 +121,27 @@ class App extends React.Component {
     e.preventDefault();
     axios
       .post(`${process.env.REACT_APP_API}/auth/user/login`, {
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(response => {
+        localStorage.token = response.data.signedJwt;
+        this.setState({
+          isLoggedIn: true,
+          user: response.data.user,
+          faves: response.data.faves,
+          email: '',
+          password: ''
+        })
+        this.closeLogin();
+      })
+      .catch(err => console.log(err));
+  }
+
+  handleSignUp = e => {
+    e.preventDefault();
+    axios
+      .post(`${process.env.REACT_APP_API}/auth/user/signup`, {
         email: this.state.email,
         password: this.state.password
       })
@@ -183,14 +188,14 @@ class App extends React.Component {
                   <Dropdown.Item onClick={this.handleLogOut}>Sign Out</Dropdown.Item>
                 </>
               ) : (
-                <Dropdown.Item onClick={this.openLogin}>Login</Dropdown.Item>
+                <Dropdown.Item onClick={this.openLogin}>Sign In / Register</Dropdown.Item>
               )}
             </Dropdown.Menu>
           </Dropdown>
           </Menu.Item>
         </Container>
       </Menu>
-      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
+      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} handleSignUp={this.handleSignUp} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
         <Routes isLoggedIn={isLoggedIn} openLogin={this.openLogin} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
       </Container>
