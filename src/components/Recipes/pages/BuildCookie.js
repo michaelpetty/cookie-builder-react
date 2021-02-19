@@ -42,19 +42,28 @@ class BuildCookie extends React.Component {
 
   displayTopIngs = ings => {
     return ings.map((ing, i) => (
-      <Button size='medium' content={ing.name} draggable className='draggable' onDragStart={(e) => this.onDragStart(e, ing.id)} key={i} />
+      <Button size='medium' content={ing.name} draggable className='draggable' onDragStart={(e) => this.onDragStart(e, ing)} key={i} />
     ))
+  }
+
+  getIngImg = name => {
+    console.log(name.match(/(\w).* /));
+    return 'chocChip60.png';
   }
 
   onDragOver = e => {
     e.preventDefault();
   }
 
-  onDragStart = (e, id) => {
-    e.dataTransfer.setData('text/plain', id);
+  onDragStart = (e, ing) => {
+    e.dataTransfer.setData('text/plain', ing.id);
+    let img = document.createElement('img');
+    img.src = `/i/${this.getIngImg(ing.name)}`;
+    e.dataTransfer.setDragImage(img, 30, 30);
   }
 
   onDrop = e => {
+    e.preventDefault();
     this.addIngred(e.dataTransfer.getData('text'));
   }
 
