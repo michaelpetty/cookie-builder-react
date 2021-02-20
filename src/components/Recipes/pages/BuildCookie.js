@@ -31,7 +31,6 @@ class BuildCookie extends React.Component {
         this.setState({ recipeResults: response.data });
       })
       .catch(err => console.log(err));
-
   }
 
   displayRecipes = recipes => {
@@ -41,14 +40,18 @@ class BuildCookie extends React.Component {
   }
 
   displayTopIngs = ings => {
-    return ings.map((ing, i) => (
-      <Button size='medium' content={ing.name} draggable className='draggable' onDragStart={(e) => this.onDragStart(e, ing)} key={i} />
+    return ings.map((ing) => (
+      <Button size='medium' draggable content={ing.name} className='draggable' onDragStart={(e) => this.onDragStart(e, ing)} data-ing-img-src={this.createIngImg(ing)} key={ing.id} />
     ))
   }
 
-  getIngImg = name => {
-    console.log(name.match(/(\w).* /));
-    return 'chocChip60.png';
+  images = {}
+
+  createIngImg = ing => {
+    const img = document.createElement('img');
+    img.src = `/i/ing/${ing.name.match(/\b(\w)/g).join('')}.png`;
+    this.images[ing.id] = img;
+    return img.src;
   }
 
   onDragOver = e => {
@@ -57,9 +60,7 @@ class BuildCookie extends React.Component {
 
   onDragStart = (e, ing) => {
     e.dataTransfer.setData('text/plain', ing.id);
-    let img = document.createElement('img');
-    img.src = `/i/${this.getIngImg(ing.name)}`;
-    e.dataTransfer.setDragImage(img, 30, 30);
+    e.dataTransfer.setDragImage(this.images[ing.id], 30, 30);
   }
 
   onDrop = e => {
