@@ -14,6 +14,7 @@ class App extends React.Component {
     password2: '',
     isLoggedIn: '',
     isModalOpen: false,
+    authErr: {},
     header: 'Build-A-Cookie',
     user: null,
     faves: null
@@ -114,7 +115,7 @@ class App extends React.Component {
   }
 
   closeLogin = () => {
-    return this.setState({isModalOpen: false});
+    return this.setState({isModalOpen: false, authErr: {}});
   }
 
   handleLogIn = e => {
@@ -135,7 +136,11 @@ class App extends React.Component {
         })
         this.closeLogin();
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        this.setState({
+          authErr: {...this.state.authErr, login: err.response.data.message}
+        })
+    })
   }
 
   handleSignUp = e => {
@@ -156,14 +161,18 @@ class App extends React.Component {
         })
         this.closeLogin();
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({
+          authErr: {...this.state.authErr, register: err.response.data.message}
+        })
+    })
   }
 
   setHeader = (title) => this.setState({header: title});
 
 
   render() {
-    const { isLoggedIn, isModalOpen, header, user, faves } = this.state;
+    const { isLoggedIn, isModalOpen, authErr, header, user, faves } = this.state;
     return (
       <>
       <Menu fixed='top' as='header'>
@@ -195,7 +204,7 @@ class App extends React.Component {
           </Menu.Item>
         </Container>
       </Menu>
-      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} handleSignUp={this.handleSignUp} isModalOpen={isModalOpen} closeLogin={this.closeLogin} />
+      <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} handleSignUp={this.handleSignUp} isModalOpen={isModalOpen} authErr={authErr} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
         <Routes isLoggedIn={isLoggedIn} openLogin={this.openLogin} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
       </Container>
