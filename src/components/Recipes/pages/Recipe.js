@@ -1,67 +1,65 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Header, List } from 'semantic-ui-react';
 
-class Recipe extends React.Component {
-  state = {
-    recipeId: this.props.match.params.recipeId,
-    recipe: {},
-    recipeSteps: [],
-    recIngs: []
-  }
+const Recipe = ({setHeader}) => {
+  const { recipeId } = useParams()
+  const [recipe, setRecipe] = useState({})
+  const [recipeSteps, setRecipeSteps] = useState([])
+  const [recIngs, setRecIngs] = useState([])
 
-  componentDidMount() {
-    this.props.setHeader('Recipe');
+  useEffect(() => {
+    setHeader('Recipe');
     axios({
       method: 'get',
-      url: `${process.env.REACT_APP_API}/api/v1/recipes/${this.state.recipeId}/full`
+      url: `${process.env.REACT_APP_API}/api/v1/recipes/${recipeId}/full`
     })
       .then(response => {
-        this.setState({recipe: response.data.recipe, recipeSteps: response.data.recipeSteps, recIngs: response.data.ingredients});
+        setRecipe(response.data.recipe)
+        setRecipeSteps(response.data.recipeSteps)
+        setRecIngs(response.data.ingredients)
       })
       .catch(err => console.log(err));
-  }
+  }, [recipeId, setHeader])
 
-  displaySteps = steps => {
+  const displaySteps = steps => {
     return steps.map((step, i) => (<List.Item  key={i}>{step.body}</List.Item>))
   }
 
-  displayIngs = ings => {
+  const displayIngs = ings => {
     return ings.map((ing, i) => (<List.Item  key={i}>{ing.amount} {ing.unit} {ing.Ingredient.name} {ing.preparation}</List.Item>))
   }
 
-  render() {
-    const { recipe, recipeSteps, recIngs } = this.state;
-    document.title = `${recipe.name} Recipe - MP's Cookie Factory`;
+  document.title = `${recipe.name} Recipe - MP's Cookie Factory`;
 
-    return (
-      <>
-        <Header as="h2">{recipe.name}</Header>
-        {(recIngs[0]) &&
-          <>
-          {(recipe.intro) && <i>Intro: {recipe.intro}</i> }
-          <Header as="h3">Ingredients</Header>
-          <List>
-            {this.displayIngs(recIngs)}
-          </List>
-          {(recipe.activeTime) && <>Active Time: {recipe.activeTime}</>} {(recipe.totalTime) && <>Total Time: {recipe.totalTime}</>}<br/>
-          Yield: {recipe.yield}
-          </>
-        }
-        {(recipeSteps[0]) &&
-          <>
-          <Header as="h3">Steps</Header>
-          Preheat: {recipe.preheat}&deg;
-          <List ordered>
-            {this.displaySteps(recipeSteps)}
-          </List>
-          {recipe.note}<br/>
-          Source: <a href={recipe.sourceURL}>{recipe.source}</a>
-          </>
-        }
+  return (
+    <>
+      <Header as="h2">{recipe.name}</Header>
+      {(recIngs[0]) &&
+        <>
+        {(recipe.intro) && <i>Intro: {recipe.intro}</i> }
+        <Header as="h3">Ingredients</Header>
+        <List>
+          {displayIngs(recIngs)}
+        </List>
+        {(recipe.activeTime) && <>Active Time: {recipe.activeTime}</>} {(recipe.totalTime) && <>Total Time: {recipe.totalTime}</>}<br/>
+        Yield: {recipe.yield}
         </>
-      )
-    }
+      }
+      {(recipeSteps[0]) &&
+        <>
+        <Header as="h3">Steps</Header>
+        Preheat: {recipe.preheat}&deg;
+        <List ordered>
+          {displaySteps(recipeSteps)}
+        </List>
+        {recipe.note}<br/>
+        Source: <a href={recipe.sourceURL}>{recipe.source}</a>
+        </>
+      }
+      </>
+    )
 }
 
 export default Recipe;

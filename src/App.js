@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Header, Menu, Container, Image, Dropdown } from 'semantic-ui-react';
-import { Link, NavLink, withRouter } from 'react-router-dom';
-import Routes from './config/routes';
+import { Link, NavLink } from 'react-router-dom';
+import Router from './config/routes';
 import Login from './components/User/pages/Login';
 
 import './App.css';
@@ -206,11 +206,11 @@ class App extends React.Component {
       </Menu>
       <Login handleInput={this.handleInput} handleLogIn={this.handleLogIn} handleSignUp={this.handleSignUp} isModalOpen={isModalOpen} authErr={authErr} closeLogin={this.closeLogin} />
       <Container text style={{ marginTop: '7em' }}>
-        <Routes isLoggedIn={isLoggedIn} openLogin={this.openLogin} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
+        <Router isLoggedIn={isLoggedIn} openLogin={this.openLogin} user={user} faves={faves} toggleFave={this.toggleFave} setHeader={this.setHeader} />
       </Container>
       </>
     )
   }
 }
 
-export default withRouter(App);
+export default App;
